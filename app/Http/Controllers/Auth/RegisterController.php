@@ -8,6 +8,7 @@ use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -18,7 +19,8 @@ class RegisterController extends Controller
     {
         //
         $input = $request->validated();
-        $user = User::create($input);
+        $input['token'] = Str::uuid();
+        $user = User::query()->create($input);
 
         UserRegistered::dispatch($user);
 
